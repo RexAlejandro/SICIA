@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - SICIA</title>
+
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <!-- Menu lateral -->
+        <aside class="menu-lateral">
+
+            <div class="logo">
+                <h2>SICIA</h2>
+                <p>Sistema de Información para la Gestión de Cotizaciones</p>
+            </div>
+
+            <nav>
+                <a href="index.html">Inicio</a>
+                <a href="clientes.html" class="activo">Clientes</a>
+                <a href="#">Servicios</a>
+                <a href="#">Materiales</a>
+                <a href="#">Cotizaciones</a>
+                <a href="#">Seguimiento</a>
+            </nav>
+
+        </aside>
+
+
+        <!-- Contenido principal -->
+        <main class="contenido">
+
+            <header class="encabezado">
+
+                <div class="titulo">
+                    <h1>Clientes</h1>
+                    <p>Administración de clientes registrados</p>
+                </div>
+
+                <div class="usuario">
+                    <span class="notificacion">🔔</span>
+                    <span class="nombre-usuario">Administrador</span>
+                </div>
+
+            </header>
+
+
+            <!-- Contenido de clientes -->
+            <section class="clientes">
+
+                <div class="encabezado-seccion">
+
+                    <div>
+                        <h2>Lista de clientes</h2>
+                        <p>Consulta y administra la información de tus clientes.</p>
+                    </div>
+
+                    <button class="boton-principal" id="btnNuevoCliente" type="button">
+                        + Nuevo cliente
+                    </button>
+
+                </div>
+
+            <!-- Formulario de nuevo cliente -->
+                <div class="formulario-cliente" id="formularioCliente">
+
+                    <div class="formulario-encabezado">
+                        <div>
+                            <h2>Nuevo cliente</h2>
+                            <p>Ingresa la información del nuevo cliente.</p>
+                        </div>
+                    </div>
+
+                    <div class="formulario-contenido">
+
+                        <div class="campo">
+                            <label for="nombreCliente">Nombre completo</label>
+                            <input type="text" id="nombreCliente" placeholder="Ej. Juan Pérez">
+                        </div>
+
+                        <div class="campo">
+                            <label for="telefonoCliente">Teléfono</label>
+                            <input type="text" id="telefonoCliente" placeholder="Ej. 81 1234 5678">
+                        </div>
+
+                        <div class="campo">
+                            <label for="correoCliente">Correo electrónico</label>
+                            <input type="email" id="correoCliente" placeholder="Ej. juan@email.com">
+                        </div>
+
+                        <div class="campo">
+                            <label for="direccionCliente">Dirección</label>
+                            <input type="text" id="direccionCliente" placeholder="Ej. Monterrey, Nuevo León">
+                        </div>
+
+                        <div class="campo campo-completo">
+                            <label for="notasCliente">Notas</label>
+                            <textarea id="notasCliente" placeholder="Información adicional del cliente..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="formulario-botones">
+
+                        <button class="boton-cancelar" id="btnCancelarCliente" type="button">
+                            Cancelar
+                        </button>
+
+                        <button class="boton-principal" id="btnGuardarCliente" type="button">
+                            Guardar cliente
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Ventana de información del cliente -->
+            <div class="ventana-cliente" id="ventanaCliente">
+                <div class="ventana-contenido">
+                        <div class="ventana-encabezado">
+                            <h2>Información del cliente</h2>
+                            <button type="button" id="btnCerrarVentana">X</button>
+                        </div>
+
+                    <div class="informacion-cliente">
+                        <p><strong>Nombre:</strong> <span id="verNombre"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="verTelefono"></span></p>
+                        <p><strong>Correo:</strong> <span id="verCorreo"></span></p>
+                        <p><strong>Dirección:</strong> <span id="verDireccion"></span></p>
+                        <p><strong>Notas:</strong> <span id="verNotas"></span></p>
+                    </div>
+                </div>
+            </div>
+
+
+                <!-- Busqueda -->
+                <div class="busqueda">
+
+                    <input
+                        type="text"
+                        id="buscarCliente"
+                        placeholder="Buscar cliente..."
+                    >
+
+                </div>
+
+
+                <!-- Tabla de clientes -->
+                <div class="tabla-contenedor">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaClientes">
+
+                            <tr>
+                                <td>001</td>
+                                <td>Juan Pérez</td>
+                                <td>81 1234 5678</td>
+                                <td>juan@email.com</td>
+                                <td>
+                                    <button class="boton-tabla">Ver</button>
+                                    <button class="boton-tabla boton-editar">Editar</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>002</td>
+                                <td>María López</td>
+                                <td>81 9876 5432</td>
+                                <td>maria@email.com</td>
+                                <td>
+                                    <button class="boton-tabla">Ver</button>
+                                    <button class="boton-tabla boton-editar">Editar</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>003</td>
+                                <td>Pedro García</td>
+                                <td>81 4567 8901</td>
+                                <td>pedro@email.com</td>
+                                <td>
+                                    <button class="boton-tabla">Ver</button>
+                                    <button class="boton-tabla boton-editar">Editar</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+
+        const btnNuevoCliente = document.getElementById("btnNuevoCliente");
+        const btnCancelarCliente = document.getElementById("btnCancelarCliente");
+        const btnGuardarCliente = document.getElementById("btnGuardarCliente");
+
+        const formularioCliente = document.getElementById("formularioCliente");
+        const tablaClientes = document.getElementById("tablaClientes");
+        const ventanaCliente = document.getElementById("ventanaCliente");
+        const btnCerrarVentana = document.getElementById("btnCerrarVentana");
+
+        const verNombre = document.getElementById("verNombre");
+        const verTelefono = document.getElementById("verTelefono");
+        const verCorreo = document.getElementById("verCorreo");
+        const verDireccion = document.getElementById("verDireccion");
+        const verNotas = document.getElementById("verNotas");
+
+        let clienteEditando = null;
+
+        /* Consultar información del cliente */
+        tablaClientes.addEventListener("click", function(event) {
+            const boton = event.target.closest("button");
+
+            if (boton && boton.textContent.trim() === "Ver") {
+                const fila = boton.closest("tr");
+
+                verNombre.textContent = fila.dataset.nombre || fila.cells[1].textContent;
+                verTelefono.textContent = fila.dataset.telefono || fila.cells[2].textContent;
+                verCorreo.textContent = fila.dataset.correo || fila.cells[3].textContent;
+                verDireccion.textContent = fila.dataset.direccion || "No registrada";
+                verNotas.textContent = fila.dataset.notas || "Sin notas";
+
+                ventanaCliente.style.display = "flex";
+            }
+        });
+
+        /* Editar cliente */
+        tablaClientes.addEventListener("click", function(event) {
+            const boton = event.target.closest(".boton-editar");
+
+            if (boton) {
+                const fila = boton.closest("tr");
+
+                clienteEditando = fila;
+
+                nombreCliente.value = fila.dataset.nombre || fila.cells[1].textContent;
+                telefonoCliente.value = fila.dataset.telefono || fila.cells[2].textContent;
+                correoCliente.value = fila.dataset.correo || fila.cells[3].textContent;
+                direccionCliente.value = fila.dataset.direccion || "";
+                notasCliente.value = fila.dataset.notas || "";
+
+                formularioCliente.style.display = "block";
+            }
+        });
+
+        /* Cerrar ventana de información */
+                btnCerrarVentana.addEventListener("click", function() {
+            ventanaCliente.style.display = "none";
+        });
+
+        const buscarCliente = document.getElementById("buscarCliente");
+
+        const nombreCliente = document.getElementById("nombreCliente");
+        const telefonoCliente = document.getElementById("telefonoCliente");
+        const correoCliente = document.getElementById("correoCliente");
+        const direccionCliente = document.getElementById("direccionCliente");
+        const notasCliente = document.getElementById("notasCliente");
+
+        /* Buscar clientes */
+        buscarCliente.addEventListener("input", function() {
+                const textoBusqueda = buscarCliente.value.toLowerCase();
+
+                const filas = tablaClientes.getElementsByTagName("tr");
+
+            for (let i = 0; i < filas.length; i++) {
+            const datosCliente = filas[i].textContent.toLowerCase();
+
+                if (datosCliente.includes(textoBusqueda)) {
+                 filas[i].style.display = "";
+                } else {
+                        filas[i].style.display = "none";
+                        }
+            }
+        });
+
+        /* Abrir formulario */
+
+        btnNuevoCliente.addEventListener("click", function() {
+            formularioCliente.style.display = "block";
+        });
+
+
+        /* Cancelar */
+
+        btnCancelarCliente.addEventListener("click", function() {
+        formularioCliente.style.display = "none";
+
+            nombreCliente.value = "";
+            telefonoCliente.value = "";
+            correoCliente.value = "";
+            direccionCliente.value = "";
+            notasCliente.value = "";
+        });
+
+
+        /* Guardar cliente */
+
+        btnGuardarCliente.addEventListener("click", function() {
+
+            const nombre = nombreCliente.value.trim();
+            const telefono = telefonoCliente.value.trim();
+            const correo = correoCliente.value.trim();
+
+            if (nombre === "") {
+                alert("Por favor, ingresa el nombre del cliente.");
+                nombreCliente.focus();
+                return;
+            }
+
+            if (clienteEditando) {
+                    clienteEditando.cells[1].textContent = nombre;
+                    clienteEditando.cells[2].textContent = telefono;
+                    clienteEditando.cells[3].textContent = correo;
+
+                    clienteEditando.dataset.nombre = nombre;
+                    clienteEditando.dataset.telefono = telefono;
+                    clienteEditando.dataset.correo = correo;
+                    clienteEditando.dataset.direccion = direccionCliente.value.trim();
+                    clienteEditando.dataset.notas = notasCliente.value.trim();
+
+                    formularioCliente.style.display = "none";
+
+                    nombreCliente.value = "";
+                    telefonoCliente.value = "";
+                    correoCliente.value = "";
+                    direccionCliente.value = "";
+                    notasCliente.value = "";
+
+                    clienteEditando = null;
+
+                alert("Cliente actualizado correctamente.");
+                return;
+            }
+
+            const numeroCliente = tablaClientes.rows.length + 1;
+
+            const fila = document.createElement("tr");
+
+                fila.dataset.nombre = nombre;
+                fila.dataset.telefono = telefono;
+                fila.dataset.correo = correo;
+                fila.dataset.direccion = direccionCliente.value.trim();
+                fila.dataset.notas = notasCliente.value.trim();
+
+            fila.innerHTML = `
+                <td>${String(numeroCliente).padStart(3, "0")}</td>
+                <td>${nombre}</td>
+                <td>${telefono}</td>
+                <td>${correo}</td>
+                <td>
+                    <button class="boton-tabla">Ver</button>
+                    <button class="boton-tabla boton-editar">Editar</button>
+                </td>
+            `;
+
+            tablaClientes.appendChild(fila);
+
+            formularioCliente.style.display = "none";
+
+            nombreCliente.value = "";
+            telefonoCliente.value = "";
+            correoCliente.value = "";
+            direccionCliente.value = "";
+            notasCliente.value = "";
+
+            alert("Cliente guardado correctamente.");
+
+            });
+
+    </script>
+
+</body>
+</html>
