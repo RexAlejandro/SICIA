@@ -11,39 +11,16 @@
 
     <div class="contenedor">
 
-        <!-- Menu lateral -->
-        <aside class="menu-lateral">
-
-            <div class="logo">
-                <h2>SICIA</h2>
-                <p>Sistema de Información para la Gestión de Cotizaciones</p>
-            </div>
-
-            <nav>
-                <a href="#" class="activo">Inicio</a>
-                <a href="clientes.html">Clientes</a>
-                <a href="#">Servicios</a>
-                <a href="#">Materiales</a>
-                <a href="#">Cotizaciones</a>
-                <a href="#">Seguimiento</a>
-            </nav>
-
-        </aside>
+        <?php include 'layouts/menu_lateral.php'; ?>
 
         <!-- Contenido principal -->
         <main class="contenido">
 
-            <header class="encabezado">
-                <div class="titulo">
-                    <h1>Dashboard Principal</h1>
-                    <p>Resumen general de SICIA</p>
-                </div>
-
-                <div class="usuario">
-                    <span class="notificacion">🔔</span>
-                    <span class="nombre-usuario">Administrador</span>
-                </div>
-            </header>
+            <?php 
+                $tituloVentana = 'Dashboard Principal';
+                $subtituloVentana = 'Resumen general de SICIA';
+                include 'layouts/header.php';
+            ?>
 
             <section class="dashboard">
 
@@ -85,7 +62,7 @@
 
             </div>
 
-             <!-- Cotizaciones recientes -->
+            <!-- Cotizaciones recientes -->
 
             <div class="seccion-cotizaciones">
 
