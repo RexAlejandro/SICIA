@@ -106,6 +106,7 @@ btnGuardarCliente.addEventListener("click", function () {
   const nombre = nombreCliente.value.trim();
   const telefono = telefonoCliente.value.trim();
   const correo = correoCliente.value.trim();
+  const regexTelefono = /^[0-9\s]+$/;
 
   if (nombre === "") {
     alert("Por favor, ingresa el nombre del cliente.");
@@ -113,8 +114,8 @@ btnGuardarCliente.addEventListener("click", function () {
     return;
   }
 
-  if (isNaN(parseInt(telefono)) || telefono === "") {
-    alert("Por favor, ingrese un numero de telefono valido.");
+  if (!regexTelefono.test(telefono) || telefono === "") {
+    alert("Por favor, ingrese un número de teléfono válido.");
     return;
   }
 
