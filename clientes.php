@@ -1,3 +1,9 @@
+<?php
+require_once 'conexion.php';
+
+$stmt = $pdo->query("SELECT * FROM clientes");
+$listaClientes = $stmt->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -54,27 +60,27 @@
 
                         <div class="campo">
                             <label for="nombreCliente">Nombre completo</label>
-                            <input type="text" id="nombreCliente" placeholder="Ej. Juan Pérez">
+                            <input type="text" name="nombreCliente" id="nombreCliente" placeholder="Ej. Juan Pérez">
                         </div>
 
                         <div class="campo">
                             <label for="telefonoCliente">Teléfono</label>
-                            <input type="text" id="telefonoCliente" placeholder="Ej. 81 1234 5678">
+                            <input type="text" name="telefonoCliente" id="telefonoCliente" placeholder="Ej. 81 1234 5678">
                         </div>
 
                         <div class="campo">
                             <label for="correoCliente">Correo electrónico</label>
-                            <input type="email" id="correoCliente" placeholder="Ej. juan@email.com">
+                            <input type="email" name="correoCliente" id="correoCliente" placeholder="Ej. juan@email.com">
                         </div>
 
                         <div class="campo">
                             <label for="direccionCliente">Dirección</label>
-                            <input type="text" id="direccionCliente" placeholder="Ej. Monterrey, Nuevo León">
+                            <input type="text" name="direccionCliente" id="direccionCliente" placeholder="Ej. Monterrey, Nuevo León">
                         </div>
 
                         <div class="campo campo-completo">
                             <label for="notasCliente">Notas</label>
-                            <textarea id="notasCliente" placeholder="Información adicional del cliente..."></textarea>
+                            <textarea name="notasCliente" id="notasCliente" placeholder="Información adicional del cliente..."></textarea>
                         </div>
 
                     </div>
@@ -140,40 +146,24 @@
                         </thead>
 
                         <tbody id="tablaClientes">
-
+                            <?php foreach ($listaClientes as $cliente): ?>
                             <tr>
-                                <td>001</td>
-                                <td>Juan Pérez</td>
-                                <td>81 1234 5678</td>
-                                <td>juan@email.com</td>
+                                <tr data-id="<?= htmlspecialchars($cliente['id_cliente']) ?>">
+                                <td><?= str_pad($cliente['id_cliente'], 3, "0", STR_PAD_LEFT) ?></td>
+                                <td><?= htmlspecialchars($cliente['nombre']) ?></td>
+                                <td><?= htmlspecialchars($cliente['tel']) ?></td>
+                                <td><?= htmlspecialchars($cliente['email']) ?></td>
                                 <td>
-                                    <button class="boton-tabla">Ver</button>
+                                    <button class="boton-tabla" 
+                                            data-nombre="<?= htmlspecialchars($cliente['nombre']) ?>"
+                                            data-telefono="<?= htmlspecialchars($cliente['tel']) ?>"
+                                            data-correo="<?= htmlspecialchars($cliente['email']) ?>"
+                                            data-direccion="<?= htmlspecialchars($cliente['direccion']) ?>"
+                                            data-notas="<?= htmlspecialchars($cliente['nota']) ?>">Ver</button>
                                     <button class="boton-tabla boton-editar">Editar</button>
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>002</td>
-                                <td>María López</td>
-                                <td>81 9876 5432</td>
-                                <td>maria@email.com</td>
-                                <td>
-                                    <button class="boton-tabla">Ver</button>
-                                    <button class="boton-tabla boton-editar">Editar</button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>003</td>
-                                <td>Pedro García</td>
-                                <td>81 4567 8901</td>
-                                <td>pedro@email.com</td>
-                                <td>
-                                    <button class="boton-tabla">Ver</button>
-                                    <button class="boton-tabla boton-editar">Editar</button>
-                                </td>
-                            </tr>
-
+                            <?php endforeach; ?>
                         </tbody>
 
                     </table>

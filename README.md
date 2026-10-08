@@ -30,5 +30,5 @@ Sigue estos pasos para clonar el proyecto y configurar la base de datos en tu en
 4. Abre tu navegador web e ingresa a la siguiente dirección:
 
 ```text
-http://localhost/sicia/index.php
+http://localhost/sicia/SICIA/
 ```

@@ -23,7 +23,6 @@ const notasCliente = document.getElementById("notasCliente");
 
 let clienteEditando = null;
 
-/* Consultar información del cliente */
 tablaClientes.addEventListener("click", function (event) {
   const boton = event.target.closest("button");
 
@@ -32,10 +31,10 @@ tablaClientes.addEventListener("click", function (event) {
 
     verNombre.textContent = fila.dataset.nombre || fila.cells[1].textContent;
     verTelefono.textContent =
-      fila.dataset.telefono || fila.cells[2].textContent;
+      fila.dataset.tel || fila.cells[2].textContent;
     verCorreo.textContent = fila.dataset.correo || fila.cells[3].textContent;
     verDireccion.textContent = fila.dataset.direccion || "No registrada";
-    verNotas.textContent = fila.dataset.notas || "Sin notas";
+    verNotas.textContent = fila.dataset.nota || "Sin nota";
 
     ventanaCliente.style.display = "flex";
   }
@@ -51,21 +50,19 @@ tablaClientes.addEventListener("click", function (event) {
     clienteEditando = fila;
 
     nombreCliente.value = fila.dataset.nombre || fila.cells[1].textContent;
-    telefonoCliente.value = fila.dataset.telefono || fila.cells[2].textContent;
+    telefonoCliente.value = fila.dataset.tel || fila.cells[2].textContent;
     correoCliente.value = fila.dataset.correo || fila.cells[3].textContent;
     direccionCliente.value = fila.dataset.direccion || "";
-    notasCliente.value = fila.dataset.notas || "";
+    notasCliente.value = fila.dataset.nota || "";
 
     formularioCliente.style.display = "block";
   }
 });
 
-/* Cerrar ventana de información */
 btnCerrarVentana.addEventListener("click", function () {
   ventanaCliente.style.display = "none";
 });
 
-/* Buscar clientes */
 buscarCliente.addEventListener("input", function () {
   const textoBusqueda = buscarCliente.value.toLowerCase();
 
@@ -82,13 +79,11 @@ buscarCliente.addEventListener("input", function () {
   }
 });
 
-/* Abrir formulario */
 
 btnNuevoCliente.addEventListener("click", function () {
   formularioCliente.style.display = "block";
 });
 
-/* Cancelar */
 
 btnCancelarCliente.addEventListener("click", function () {
   formularioCliente.style.display = "none";
@@ -100,13 +95,14 @@ btnCancelarCliente.addEventListener("click", function () {
   notasCliente.value = "";
 });
 
-/* Guardar cliente */
 
-btnGuardarCliente.addEventListener("click", function () {
+/* Guardar cliente con Fetch API */
+btnGuardarCliente.addEventListener("click", async function () {
   const nombre = nombreCliente.value.trim();
-  const telefono = telefonoCliente.value.trim();
+  const tel = telefonoCliente.value.trim();
   const correo = correoCliente.value.trim();
-  const regexTelefono = /^[0-9\s]+$/;
+  const direccion = direccionCliente.value.trim();
+  const nota = notasCliente.value.trim();
 
   if (nombre === "") {
     alert("Por favor, ingresa el nombre del cliente.");
@@ -114,66 +110,88 @@ btnGuardarCliente.addEventListener("click", function () {
     return;
   }
 
-  if (!regexTelefono.test(telefono) || telefono === "") {
+  const regexTelefono = /^[0-9\s]+$/;
+  if (!regexTelefono.test(tel) || tel === "") {
     alert("Por favor, ingrese un número de teléfono válido.");
     return;
   }
 
+  const datosFormulario = new FormData();
+  datosFormulario.append("nombre", nombre);
+  datosFormulario.append("tel", tel);
+  datosFormulario.append("email", correo); 
+  datosFormulario.append("direccion", direccion);
+  datosFormulario.append("nota", nota);
+
+  // Determinar si es una actualización (Editar) o un registro nuevo (Crear)
   if (clienteEditando) {
-    clienteEditando.cells[1].textContent = nombre;
-    clienteEditando.cells[2].textContent = telefono;
-    clienteEditando.cells[3].textContent = correo;
-
-    clienteEditando.dataset.nombre = nombre;
-    clienteEditando.dataset.telefono = telefono;
-    clienteEditando.dataset.correo = correo;
-    clienteEditando.dataset.direccion = direccionCliente.value.trim();
-    clienteEditando.dataset.notas = notasCliente.value.trim();
-
-    formularioCliente.style.display = "none";
-
-    nombreCliente.value = "";
-    telefonoCliente.value = "";
-    correoCliente.value = "";
-    direccionCliente.value = "";
-    notasCliente.value = "";
-
-    clienteEditando = null;
-
-    alert("Cliente actualizado correctamente.");
-    return;
+      datosFormulario.append("accion", "editar");
+      datosFormulario.append("id_cliente", clienteEditando.dataset.id); 
+  } else {
+      datosFormulario.append("accion", "crear");
   }
 
-  const numeroCliente = tablaClientes.rows.length + 1;
+  try {
+    const respuesta = await fetch("guardar_cliente.php", {
+      method: "POST",
+      body: datosFormulario
+    });
 
-  const fila = document.createElement("tr");
+    // Leer la respuesta del servidor en formato JSON
+    const resultado = await respuesta.json();
 
-  fila.dataset.nombre = nombre;
-  fila.dataset.telefono = telefono;
-  fila.dataset.correo = correo;
-  fila.dataset.direccion = direccionCliente.value.trim();
-  fila.dataset.notas = notasCliente.value.trim();
+    if (resultado.exito) {
+      alert(resultado.mensaje); 
 
-  fila.innerHTML = `
-                <td>${String(numeroCliente).padStart(3, "0")}</td>
-                <td>${nombre}</td>
-                <td>${telefono}</td>
-                <td>${correo}</td>
-                <td>
-                    <button class="boton-tabla">Ver</button>
-                    <button class="boton-tabla boton-editar">Editar</button>
-                </td>
-            `;
+      if (clienteEditando) {
+        clienteEditando.cells[1].textContent = nombre;
+        clienteEditando.cells[2].textContent = tel;
+        clienteEditando.cells[3].textContent = correo;
+        
+        clienteEditando.dataset.nombre = nombre;
+        clienteEditando.dataset.tel = tel;
+        clienteEditando.dataset.correo = correo;
+        clienteEditando.dataset.direccion = direccion;
+        clienteEditando.dataset.nota = nota;
+        
+        clienteEditando = null;
+      } else {
+        const numeroCliente = tablaClientes.rows.length + 1;
+        const fila = document.createElement("tr");
+        
+        fila.dataset.id = resultado.id_insertado; 
+        fila.dataset.nombre = nombre;
+        fila.dataset.tel = tel;
+        fila.dataset.correo = correo;
+        fila.dataset.direccion = direccion;
+        fila.dataset.nota = nota;
 
-  tablaClientes.appendChild(fila);
+        fila.innerHTML = `
+            <td>${String(numeroCliente).padStart(3, "0")}</td>
+            <td>${nombre}</td>
+            <td>${tel}</td>
+            <td>${correo}</td>
+            <td>
+                <button class="boton-tabla">Ver</button>
+                <button class="boton-tabla boton-editar">Editar</button>
+            </td>
+        `;
+        tablaClientes.appendChild(fila);
+      }
 
-  formularioCliente.style.display = "none";
+      formularioCliente.style.display = "none";
+      nombreCliente.value = "";
+      telefonoCliente.value = "";
+      correoCliente.value = "";
+      direccionCliente.value = "";
+      notasCliente.value = "";
 
-  nombreCliente.value = "";
-  telefonoCliente.value = "";
-  correoCliente.value = "";
-  direccionCliente.value = "";
-  notasCliente.value = "";
+    } else {
+      alert("Error en el servidor: " + resultado.mensaje);
+    }
 
-  alert("Cliente guardado correctamente.");
+  } catch (error) {
+    console.error("Error en la petición Fetch:", error);
+    alert("Ocurrió un error de conexión con el servidor.");
+  }
 });
